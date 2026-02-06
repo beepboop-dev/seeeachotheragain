@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When will Verity and Philippe see each other again?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lato', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #533483 100%);
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating hearts */
+  .hearts {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .heart {
+    position: absolute;
+    bottom: -10%;
+    opacity: 0;
+    font-size: 1.5rem;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-110vh) rotate(720deg) scale(1); opacity: 0; }
+  }
+
+  .container {
+    text-align: center;
+    z-index: 1;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: #e8a0bf;
+  }
+
+  .subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    font-weight: 300;
+    opacity: 0.6;
+    margin-bottom: 3rem;
+    letter-spacing: 0.1em;
+  }
+
+  .countdown {
+    display: flex;
+    gap: clamp(0.5rem, 3vw, 2rem);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+  }
+
+  .number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(180deg, #fff 0%, #e8a0bf 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    opacity: 0.5;
+    margin-top: 0.5rem;
+  }
+
+  .separator {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    opacity: 0.3;
+    align-self: flex-start;
+    margin-top: 0.2em;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+
+  .date-info {
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    opacity: 0.4;
+    font-weight: 300;
+  }
+
+  .arrived {
+    display: none;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .arrived .heart-icon {
+    font-size: 1.5em;
+    display: inline-block;
+    animation: heartbeat 1s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 20px rgba(232, 160, 191, 0.3); }
+    to { text-shadow: 0 0 40px rgba(232, 160, 191, 0.6); }
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  /* Stars background */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="hearts" id="hearts"></div>
+
+<div class="container">
+  <h1>When will <em>Verity</em> & <em>Philippe</em><br>see each other again?</h1>
+  <p class="subtitle">the countdown is on ✨</p>
+
+  <div class="countdown" id="countdown">
+    <div class="unit"><span class="number" id="days">--</span><span class="label">days</span></div>
+    <span class="separator">:</span>
+    <div class="unit"><span class="number" id="hours">--</span><span class="label">hours</span></div>
+    <span class="separator">:</span>
+    <div class="unit"><span class="number" id="minutes">--</span><span class="label">minutes</span></div>
+    <span class="separator">:</span>
+    <div class="unit"><span class="number" id="seconds">--</span><span class="label">seconds</span></div>
+  </div>
+
+  <p class="date-info">February 20, 2026 · 12:30 Brussels time</p>
+
+  <div class="arrived" id="arrived">
+    <span class="heart-icon">💕</span> It's time! <span class="heart-icon">💕</span>
+  </div>
+</div>
+
+<script>
+  // Target: Feb 20, 2026 at 12:30 Europe/Brussels (CET = UTC+1 in winter)
+  // Feb 20 is winter time in Brussels, so CET (UTC+1)
+  // 12:30 Brussels = 11:30 UTC
+  const TARGET = new Date('2026-02-20T11:30:00Z');
+
+  function update() {
+    const now = new Date();
+    let diff = TARGET - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdown').style.display = 'none';
+      document.querySelector('.subtitle').style.display = 'none';
+      document.getElementById('arrived').style.display = 'block';
+      return;
+    }
+
+    const d = Math.floor(diff / 86400000); diff %= 86400000;
+    const h = Math.floor(diff / 3600000); diff %= 3600000;
+    const m = Math.floor(diff / 60000); diff %= 60000;
+    const s = Math.floor(diff / 1000);
+
+    document.getElementById('days').textContent = d;
+    document.getElementById('hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+  }
+
+  update();
+  setInterval(update, 1000);
+
+  // Stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 100; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDuration = (2 + Math.random() * 4) + 's';
+    s.style.animationDelay = Math.random() * 4 + 's';
+    starsEl.appendChild(s);
+  }
+
+  // Floating hearts
+  const heartsEl = document.getElementById('hearts');
+  const emojis = ['💕', '💗', '✨', '💖', '🤍', '💫'];
+  function spawnHeart() {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    h.style.left = Math.random() * 100 + '%';
+    h.style.animationDuration = (8 + Math.random() * 8) + 's';
+    h.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+    heartsEl.appendChild(h);
+    setTimeout(() => h.remove(), 16000);
+  }
+  setInterval(spawnHeart, 800);
+</script>
+</body>
+</html>
